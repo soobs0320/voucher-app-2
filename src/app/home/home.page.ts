@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ErpService } from '../services/erp.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-
 export class HomePage implements OnInit {
   menus: Menu[] = [
     { name: '_SCAN_QR_CODE', icon: 'qr-code-outline', url: '/scanner' },
@@ -14,9 +14,13 @@ export class HomePage implements OnInit {
     { name: '_PERSONAL_INFO', icon: 'person-outline', url: '/personal-info' },
   ];
 
-  constructor() {}
+  constructor(private erp: ErpService) {}
 
   ngOnInit() {}
+
+  async call() {
+    const res = await this.erp.getList<any>('campaign');
+  }
 }
 
 interface Menu {

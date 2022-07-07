@@ -47,7 +47,7 @@
         <ion-label>{{ "_SETTINGS" | translate }}</ion-label>
       </ion-list-header>
       <ion-item lines="none" class="font-md">
-        <ion-icon slot="start" name="language-outline"></ion-icon>df
+        <ion-icon slot="start" name="language-outline"></ion-icon>
         <ion-label>{{ "_LANGUAGE" | translate }}</ion-label>
         <ion-select *ngIf="languages" slot="end"  interface="popover" [(ngModel)]="user.language"
           (ionChange)="onLangChange()" [compareWith]="compareFn">

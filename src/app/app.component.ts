@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from './services/storage.service';
 
@@ -8,10 +9,16 @@ import { StorageService } from './services/storage.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private translateService:TranslateService,private storageService:StorageService) {}
+  constructor(
+    private translateService: TranslateService,
+    private storageService: StorageService,
+    private platform: Platform
+  ) {}
 
-  async ngOnInit(){
-    this.translateService.use('en');
-    await this.storageService.init();
+  ngOnInit() {
+    this.platform.ready().then(async () => {
+      this.translateService.use('en');
+      await this.storageService.init();
+    });
   }
 }

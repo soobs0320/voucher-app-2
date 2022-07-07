@@ -1,0 +1,31 @@
+.unread {
+  --background: var(--unread-message-background);
+}
+
+.edit-bar {
+  display: flex;
+}
+
+.edit-bar > .select-all {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > ion-checkbox {
+    margin-right: 6px;
+  }
+}
+
+.edit-bar > .delete-button {
+  width: 35%;
+}
+
+.edit-bar > .read-button {
+  width: 45%;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+}

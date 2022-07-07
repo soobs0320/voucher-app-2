@@ -1,0 +1,83 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title *ngIf="!canSelect">{{ "_NOTIFICATIONS" | translate }}</ion-title>
+        <ion-title *ngIf="canSelect">
+            <span *ngIf="!isSelectAll">{{ "_SELECTED_WITH_COUNT" | translate: { count: selectedIds.length } }}</span>
+            <span *ngIf="isSelectAll">{{ "_ALL_SELECTED" | translate }}</span>
+        </ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+            <!-- <ion-button (click)="toggleEdit()">
+              <ion-icon name="create-outline"></ion-icon>
+          </ion-button> -->
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ng-container *ngIf="notifications; else loading">
+        <ion-list>
+            <ng-container *ngFor="let notification of notifications" [ngTemplateOutlet]="notificationCard"
+                [ngTemplateOutletContext]="{ notification: notification }"></ng-container>
+        </ion-list>
+    </ng-container>
+
+    <ion-infinite-scroll *ngIf="notifications" (ionInfinite)="loadMoreNotifications()" threshold="100px">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'_LOADING_MORE_DATA' | translate">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar *ngIf="canSelect">
+        <div class="edit-bar">
+            <div class="select-all">
+                <ion-checkbox [(ngModel)]="isSelectAll" (ionChange)="onSelectAllChange()"></ion-checkbox>
+                <ion-label>{{ "_ALL" | translate }}</ion-label>
+            </div>
+            <ion-button class="delete-button" (click)="onDelete()">
+                <ion-label>{{ "_DELETE" | translate }}</ion-label>
+            </ion-button>
+            <ion-button class="read-button" (click)="onMarkAsRead()">
+                <ion-label>{{ "_MARK_AS_READ" | translate }}</ion-label>
+            </ion-button>
+        </div>
+    </ion-toolbar>
+</ion-footer>
+
+<ng-template #loading>
+    <app-empty *ngIf="isError" [config]="emptyConfig" (retry)="loadData()"></app-empty>
+    <div *ngIf="!isError" class="section flex-center" style="height: 70%;">
+        <ion-spinner></ion-spinner>
+    </div>
+</ng-template>
+
+<ng-template #notificationCard let-notification="notification">
+    <ion-item-sliding #itemSliding>
+        <ion-item lines="none" [ngClass]="notification.status == 'UNREAD' ? 'unread' : 'read'"
+            (click)="onNotification(notification)">
+            <!-- <ion-checkbox *ngIf="canSelect" slot="start" [(ngModel)]="notification.selected"
+              (ngModelChange)="onSelectChange($event, notification)" class="mr-3"></ion-checkbox> -->
+            <ion-avatar slot="start" class="avatar">
+                <img src='assets/image/avatar.png' alt="">
+            </ion-avatar>
+            <div class="ion-padding-vertical">
+                <h3 class="font-lg bold m-0">{{ notification.title }}</h3>
+                <p class="font-sm line-clamp my-1">{{ notification.message }}</p>
+                <p class="font-xs">{{ notification.sentTime | titlecase }}</p>
+            </div>
+            <ion-button slot="end" fill="clear" color="dark" (click)="onMore(itemSliding)">
+                <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <ion-item-options side="end">
+            <ion-item-option (click)="onDelete(notification.doc_id)" color="danger">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+        </ion-item-options>
+    </ion-item-sliding>
+</ng-template>

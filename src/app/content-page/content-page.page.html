@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="content">{{ content.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="content; else loading" class="section">
+    <div class="html-content">
+      <dynamic-html [content]="content.content"></dynamic-html>
+    </div>
+  </div>
+</ion-content>
+
+<ng-template #loading>
+  <app-empty *ngIf="isError" [config]="emptyConfig" (retry)="loadData()"></app-empty>
+  <div *ngIf="!isError" class="section flex-center" style="height: 70%;">
+    <ion-spinner></ion-spinner>
+  </div>
+</ng-template>

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ '_PERSONAL_INFO' | translate }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <ion-card class="profile-card">
+    <ion-card-content class="display-flex">
+      <ion-avatar>
+        <img src='assets/image/avatar.png' alt="">
+      </ion-avatar>
+      <div class="pl-3 display-flex flex-column ion-justify-content-center ion-align-items-baseline">
+        <ion-badge class="giver-badge mb-2">Giver</ion-badge>
+        <ion-label class="font-lg bold">{{ 'username' }}</ion-label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="ion-padding">
+    <ion-list class="transparent-list">
+      <ion-list-header>
+        <ion-label>{{ "_NOTIFICATIONS" | translate }}</ion-label>
+      </ion-list-header>
+      <ion-item lines="none" class="font-md">
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-label>{{ "_RECEIVE_MARKETING_EMAIL" | translate }}</ion-label>
+        <ion-toggle slot="end" (ionChange)="onReceiveEmail()"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none" class="font-md">
+        <ion-icon slot="start" name="phone-portrait-outline"></ion-icon>
+        <ion-label>{{ "_RECEIVE_MARKETING_SMS" | translate }}</ion-label>
+        <ion-toggle slot="end" (ionChange)="onReceiveSMS()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="transparent-list">
+      <ion-list-header>
+        <ion-label>{{ "_SETTINGS" | translate }}</ion-label>
+      </ion-list-header>
+      <ion-item lines="none" class="font-md">
+        <ion-icon slot="start" name="language-outline"></ion-icon>df
+        <ion-label>{{ "_LANGUAGE" | translate }}</ion-label>
+        <ion-select *ngIf="languages" slot="end"  interface="popover" [(ngModel)]="user.language"
+          (ionChange)="onLangChange()" [compareWith]="compareFn">
+          <ion-select-option *ngFor="let lang of languages" [value]="lang.doc_id">
+            {{ lang.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="none" class="font-md">
+        <ion-icon slot="start" name="color-palette-outline"></ion-icon>
+        <ion-label>{{ "_THEME" | translate }}</ion-label>
+        <ion-select slot="end" interface="popover" [(ngModel)]="user.theme"
+          (ionChange)="onThemeChange()" [compareWith]="compareFn">
+          <ion-select-option value="SYSTEM">{{ "_SYSTEM" | translate }}</ion-select-option>
+          <ion-select-option value="LIGHT">{{ "_LIGHT" | translate }}</ion-select-option>
+          <ion-select-option value="DARK">{{ "_DARK" | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-text-center mt-5">
+      <p class="font-sm italic">
+        <ion-note>{{ "_VERSION" | translate }}:&nbsp;{{ version }}&nbsp;{{ versionType }}</ion-note>
+      </p>
+    </div>
+  </div>
+</ion-content>

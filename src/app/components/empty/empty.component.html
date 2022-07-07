@@ -1,0 +1,24 @@
+<ion-grid class="ion-text-center">
+  <ion-row *ngIf="config.image">
+    <ion-col>
+      <img class="image" [src]="config.image"/>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-note>
+        <h4>{{ config.title | translate }}</h4>
+      </ion-note>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-note>{{ config.message | translate }}</ion-note>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="config.retryButtonText">
+    <ion-col>
+      <ion-button (click)="onClick()" shape="round">{{ config.retryButtonText | translate }}</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

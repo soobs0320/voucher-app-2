@@ -33,7 +33,7 @@
       </div>
 
       <div class="display-flex ion-justify-content-center">
-        <div *ngFor="let lang of supportedLangs; let last = last" [class.mr-2]="!last" (click)="onLang(lang)">
+        <div *ngFor="let lang of supportedLangs; let last = last" [class.mr-2]="!last">
           <ion-text class="font-sm lang-text" [class.selected]="lang.selected">
             {{ lang.name }}
           </ion-text>

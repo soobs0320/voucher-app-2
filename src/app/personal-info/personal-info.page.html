@@ -8,11 +8,6 @@
 </ion-header>
 
 <ion-content>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
-
   <ion-card class="profile-card">
     <ion-card-content class="display-flex">
       <ion-avatar>
@@ -50,7 +45,7 @@
         <ion-icon slot="start" name="language-outline"></ion-icon>
         <ion-label>{{ "_LANGUAGE" | translate }}</ion-label>
         <ion-select *ngIf="languages" slot="end"  interface="popover" [(ngModel)]="selectedLanguage"
-          (ionChange)="onLangChange()" [compareWith]="compareFn">
+          (ionChange)="onLangChange()">
           <ion-select-option *ngFor="let lang of languages" [value]="lang.doc_id">
             {{ lang.name }}
           </ion-select-option>

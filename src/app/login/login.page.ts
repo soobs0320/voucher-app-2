@@ -12,6 +12,7 @@ import { StorageService } from '../services/storage.service';
 export class LoginPage implements OnInit {
   isLoading = false;
   loginForm: FormGroup;
+  supportedLangs = [];
 
   constructor(
     private fb: FormBuilder,

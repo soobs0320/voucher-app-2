@@ -3,9 +3,10 @@ import {
   BarcodeScanner,
   ScanResult,
 } from '@capacitor-community/barcode-scanner';
-import { AlertController } from '@ionic/angular';
+
 import { ErpService } from '../services/erp.service';
 import { Location } from '@angular/common';
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-scanner',
@@ -14,10 +15,11 @@ import { Location } from '@angular/common';
 })
 export class ScannerPage implements OnInit {
   isScanning: boolean = false;
+  isLoading: boolean = false;
   pattern = /\/activation-history\/(\d+)/;
 
   constructor(
-    private alertController: AlertController,
+    private commonService: CommonService,
     private erpService: ErpService,
     private _location: Location
   ) {}
@@ -26,16 +28,6 @@ export class ScannerPage implements OnInit {
     setTimeout(() => {
       this.startScan();
     }, 1000);
-  }
-
-  private async presentAlert(title: string, message: string) {
-    const alert = await this.alertController.create({
-      header: title,
-      message,
-      buttons: ['ok'],
-    });
-
-    await alert.present();
   }
 
   async startScan() {
@@ -55,11 +47,13 @@ export class ScannerPage implements OnInit {
 
   async processResult(result: ScanResult) {
     try {
-      //show loading
+      this.isLoading = true;
       if (!result.hasContent) return;
 
-      if (!this.pattern.test(result.content))
-        return this.presentAlert('Error', 'Invalid QR code');
+      if (!this.pattern.test(result.content)) {
+        this.commonService.presentAlert('Error', 'Invalid QR code');
+        return;
+      }
 
       const [_, voucherActivationId] = this.pattern.exec(result.content);
 
@@ -68,12 +62,18 @@ export class ScannerPage implements OnInit {
         +voucherActivationId,
         null
       );
-      this.presentAlert('Success', 'Voucher successfully scanned');
+      this.commonService.presentAlert(
+        'Success',
+        'Voucher successfully scanned'
+      );
     } catch (error) {
       console.log(error);
-      this.presentAlert('Error', error.error.error || 'Something goes wrong');
+      this.commonService.presentAlert(
+        'Error',
+        error.error.error || 'Something goes wrong'
+      );
     } finally {
-      //hide loading
+      this.isLoading = false;
       this.isScanning = false;
       document.body.classList.remove('background-transparent');
       this._location.back();
@@ -96,7 +96,10 @@ export class ScannerPage implements OnInit {
       return true;
     }
 
-    this.presentAlert('Alert', 'Permission must be enabled to scan qr code');
+    this.commonService.presentAlert(
+      'Alert',
+      'Camera permission must be enabled to scan qr code'
+    );
     return false;
   }
 }

@@ -1,0 +1,15 @@
+{
+  "_LOGIN": "Login",
+  "_EMAIL": "Email",
+  "_PASSWORD": "Password",
+  "_NO_ACCOUNT": "No account",
+  "_THEME": "Theme",
+  "_SYSTEM": "System",
+  "_LIGHT": "Light",
+  "_DARK": "Dark",
+  "_LANGUAGE": "Language",
+  "_PAGE_MIGHT_BE_REMOVED_OR_BROKEN": "Page might be removed or broken",
+  "_PLEASE_TRY_AGAIN_LATER": "Please try again later",
+  "_TRY_AGAIN": "Try again",
+  "_LOGOUT": "退出账号"
+}

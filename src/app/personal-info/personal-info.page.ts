@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Language } from 'src/interfaces/erp';
+import { CommonService } from '../services/common.service';
 import { ErpService } from '../services/erp.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -8,10 +11,14 @@ import { ErpService } from '../services/erp.service';
   styleUrls: ['./personal-info.page.scss'],
 })
 export class PersonalInfoPage implements OnInit {
-  user = { language: 'zh', theme: 'LIGHT' };
   languages: Language[];
+  selectedLanguage;
 
-  constructor(private erpService: ErpService) {}
+  constructor(
+    private erpService: ErpService,
+    private storageService: StorageService,
+    private commonService: CommonService
+  ) {}
 
   ngOnInit() {
     this.initialize();
@@ -20,17 +27,15 @@ export class PersonalInfoPage implements OnInit {
   async initialize() {
     const response = await this.erpService.getList<Language>('language');
     this.languages = response.result;
+    const language = await this.storageService.get('language');
+    this.selectedLanguage = language || 'en';
   }
 
   onLangChange() {
-    console.log('language changed', this.user.language);
-  }
-
-  onThemeChange() {
-    console.log('theme changed', this.user.theme);
+    this.commonService.changeLanguage(this.selectedLanguage);
   }
 
   logout() {
-    this.erpService.logout();
+    this.commonService.logout();
   }
 }

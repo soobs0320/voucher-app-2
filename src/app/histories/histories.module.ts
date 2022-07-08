@@ -8,6 +8,7 @@ import { HistoriesPageRoutingModule } from './histories-routing.module';
 
 import { HistoriesPage } from './histories.page';
 import { TranslateModule } from '@ngx-translate/core';
+import { EmptyComponentModule } from '../components/empty/empty.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     HistoriesPageRoutingModule,
-    TranslateModule
+    TranslateModule,
+    EmptyComponentModule
   ],
   declarations: [HistoriesPage]
 })

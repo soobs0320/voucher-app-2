@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
 
   constructor(private erp: ErpService) {}
 
-  ngOnInit() {}
+  async ngOnInit() {}
 
   async call() {
     const res = await this.erp.getList<any>('campaign');

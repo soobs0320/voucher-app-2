@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Pageable } from 'src/interfaces/erp';
 import { StorageService } from './storage.service';
@@ -11,8 +10,7 @@ import { StorageService } from './storage.service';
 export class ErpService {
   constructor(
     private http: HttpClient,
-    private storageService: StorageService,
-    private router: Router
+    private storageService: StorageService
   ) {}
 
   getList<T>(documentType: string, filter?) {
@@ -35,13 +33,6 @@ export class ErpService {
     return this.http
       .post<any>(url, payload, { observe: 'response' })
       .toPromise();
-  }
-
-  logout() {
-    this.storageService.remove('token');
-    this.storageService.remove('refreshToken');
-    this.storageService.remove('userId');
-    this.router.navigate(['/login']);
   }
 
   public async getRefreshToken() {

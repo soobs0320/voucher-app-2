@@ -24,11 +24,6 @@ export class HistoriesPage implements OnInit {
     { groupName: 'NEW', notifications: [] },
     { groupName: 'EARLIER', notifications: [] },
   ];
-  public emptyConfig: SwsEmptyConfig = {
-    image: './assets/icon/empty.svg',
-    title: '_YOU_DO_NOT_HAVE_ANY_INBOX',
-    message: '_GET_MORE_VOUCHERS',
-  };
   public isSelectAll: boolean = false;
 
   constructor(private erpService: ErpService) {}

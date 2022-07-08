@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title *ngIf="!canSelect">{{ "_NOTIFICATIONS" | translate }}</ion-title>
+        <ion-title *ngIf="!canSelect">{{ "_SCAN_HISTORY" | translate }}</ion-title>
         <ion-title *ngIf="canSelect">
             <span *ngIf="!isSelectAll">{{ "_SELECTED_WITH_COUNT" | translate: { count: selectedIds.length } }}</span>
             <span *ngIf="isSelectAll">{{ "_ALL_SELECTED" | translate }}</span>
@@ -50,7 +50,7 @@
 </ion-footer>
 
 <ng-template #loading>
-    <app-empty *ngIf="isError" [config]="emptyConfig" (retry)="loadData()"></app-empty>
+    <app-empty *ngIf="isError" (retry)="loadData()"></app-empty>
     <div *ngIf="!isError" class="section flex-center" style="height: 70%;">
         <ion-spinner></ion-spinner>
     </div>

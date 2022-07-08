@@ -17,8 +17,9 @@ export class AppComponent {
 
   ngOnInit() {
     this.platform.ready().then(async () => {
-      this.translateService.use('en');
       await this.storageService.init();
+      const language = await this.storageService.get('language');
+      this.translateService.use(language || 'en');
     });
   }
 }

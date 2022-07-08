@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'_HOME'|translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let menu of menus" size="6">
+        <ion-card [routerLink]="[menu.url]">
+          <ion-card-header>
+            <ion-card-title><ion-icon [name]="menu.icon"></ion-icon></ion-card-title>
+            <ion-card-subtitle>{{menu.name|translate}}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

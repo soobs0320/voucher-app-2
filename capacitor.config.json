@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "voucher-merchant",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

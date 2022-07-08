@@ -1,0 +1,24 @@
+{
+    "_LOGIN": "登入",
+    "_EMAIL": "电邮",
+    "_PASSWORD": "密码",
+    "_NO_ACCOUNT": "没有账号",
+    "_THEME": "主题",
+    "_SYSTEM": "System",
+    "_LIGHT": "Light",
+    "_DARK": "Dark",
+    "_LANGUAGE": "语言",
+    "_PAGE_MIGHT_BE_REMOVED_OR_BROKEN": "页面不存在",
+    "_PLEASE_TRY_AGAIN_LATER": "请稍后再尝试",
+    "_TRY_AGAIN": "刷新",
+    "_LOGOUT": "退出账号",
+    "_HOME": "主页",
+    "_SCAN_QR_CODE": "扫描QR码",
+    "_HISTORY": "历史",
+    "_HELP": "帮助",
+    "_PERSONAL_INFO": "个人信息",
+    "_SCAN_HISTORY": "扫描历史",
+    "_SETTINGS": "设定",
+    "_VERSION": "版本"
+  }
+  

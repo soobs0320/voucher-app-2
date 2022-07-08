@@ -1,0 +1,23 @@
+{
+  "_LOGIN": "Login",
+  "_EMAIL": "Email",
+  "_PASSWORD": "Password",
+  "_NO_ACCOUNT": "No account",
+  "_THEME": "Theme",
+  "_SYSTEM": "System",
+  "_LIGHT": "Light",
+  "_DARK": "Dark",
+  "_LANGUAGE": "Language",
+  "_PAGE_MIGHT_BE_REMOVED_OR_BROKEN": "Page might be removed or broken",
+  "_PLEASE_TRY_AGAIN_LATER": "Please try again later",
+  "_TRY_AGAIN": "Try again",
+  "_LOGOUT": "Logout",
+  "_HOME": "Home",
+  "_SCAN_QR_CODE": "Scan QR Code",
+  "_HISTORY": "History",
+  "_HELP": "Help",
+  "_PERSONAL_INFO": "Personal Info",
+  "_SCAN_HISTORY": "Scan History",
+  "_SETTINGS": "Settings",
+  "_VERSION": "Version"
+}

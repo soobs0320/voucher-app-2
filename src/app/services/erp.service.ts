@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Pageable } from 'src/interfaces/erp';
 import { StorageService } from './storage.service';
@@ -10,12 +11,13 @@ import { StorageService } from './storage.service';
 export class ErpService {
   constructor(
     private http: HttpClient,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private router: Router
   ) {}
 
-  getList<T>(documentType: string) {
+  getList<T>(documentType: string, filter?) {
     const url = `${environment.apiUrl}/${environment.companyCode}/docs/${documentType}`;
-    return this.http.get<Pageable<T>>(url).toPromise();
+    return this.http.get<Pageable<T>>(url, { params:filter }).toPromise();
   }
 
   getOne<T>(documentType: string, id: number) {
@@ -34,12 +36,17 @@ export class ErpService {
     this.storageService.remove('token');
     this.storageService.remove('refreshToken');
     this.storageService.remove('userId');
+    this.router.navigate(['/login']);
   }
 
   public async getRefreshToken() {
     const refreshToken = await this.storageService.get('refreshToken');
-    let headers = { headers: { 'Authorization': 'Bearer ' + refreshToken } };
-    let requestURL = environment.apiUrl + "/" + environment.companyCode + '/refresh_refresh_token';
+    let headers = { headers: { Authorization: 'Bearer ' + refreshToken } };
+    let requestURL =
+      environment.apiUrl +
+      '/' +
+      environment.companyCode +
+      '/refresh_refresh_token';
     return this.http.get<any>(requestURL, headers).pipe().toPromise();
- }
+  }
 }

@@ -29,4 +29,8 @@ export class PersonalInfoPage implements OnInit {
   onThemeChange() {
     console.log('theme changed', this.user.theme);
   }
+
+  logout() {
+    this.erpService.logout();
+  }
 }

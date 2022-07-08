@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, IonItemSliding } from '@ionic/angular';
 import * as moment from 'moment';
 import { SwsEmptyConfig } from '../components/empty/empty.component';
-import { Notification } from '../../interfaces/erp';
+import { Notification, Pageable } from '../../interfaces/erp';
+import { ErpService } from '../services/erp.service';
 
 @Component({
   selector: 'app-histories',
@@ -14,7 +15,7 @@ export class HistoriesPage implements OnInit {
   @ViewChild(IonItemSliding) itemSliding: IonItemSliding;
 
   public isError: any;
-  public notificationFilter;
+  public filter;
   public notifications: Notification[];
   public notificationTotal: number;
   public selectedIds: number[] = [];
@@ -30,120 +31,41 @@ export class HistoriesPage implements OnInit {
   };
   public isSelectAll: boolean = false;
 
-  constructor() {}
+  constructor(private erpService: ErpService) {}
 
   async ngOnInit() {
-    this.initFilter();
+    this.filter = {
+      hasFk: true,
+      hasPk: true,
+      sortBy: 'doc_lastModifiedDate',
+      sortType: 'desc',
+      lang: 'en',
+      currentPage: 1,
+      itemsPerPage: 10,
+      fromVoucherMerchant: true
+    };
     this.loadNotifications();
   }
 
-  initFilter() {
-    this.notificationFilter = {
-      pagination: {
-        itemsPerPage: 10,
-        currentPage: 1,
-      },
-      sort: {
-        sortBy: 'sentTime',
-        sortType: 'desc',
-      },
-    };
-  }
-
   async loadNotifications(infiniteScroll: IonInfiniteScroll = null) {
+    let response: Pageable<any>;
     try {
-      // let res = await this.customerService.getNotifications(this.notificationFilter);
-      // this.notificationTotal = res.total;
-      // res.result = res.result.map((notification) => {
-      //   let sentTime = moment(notification.sentTime);
-      //   let earlierTime = moment().subtract(1, 'weeks');
-      //   notification.timeGroup = sentTime.isBefore(earlierTime) ? '_EARLIER' : '_NEW';
-      //   notification.sentTime = sentTime.startOf("minutes").fromNow();
-
-      //   /** TODO: Testing with infinite scroll */
-      //   notification.selected = this.isSelectAll;
-
-      //   return notification;
-      // })
-
-      // if (infiniteScroll)
-      //   this.notifications = [...this.notifications, ...res.result];
-      // else
-      //   this.notifications = res.result;
+      response = await this.erpService.getList<any>('voucher', this.filter);
+      const notifications:Notification[] = response.result.map((voucher) => {
+        return <Notification>{
+          icon: voucher.campaign.thumbnail,
+          title: voucher.campaign.name,
+          message: voucher.label,
+          sentTime: voucher.doc_lastModifiedDate,
+        };
+      });
 
       if (infiniteScroll) {
-        const notifications = [
-          {
-            title: 'title 1 load more',
-            message: 'message 1 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 2 load more',
-            message: 'message 2 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 3 load more',
-            message: 'message 3',
-            sentTime: '2022-07-06',
-          },
-        ];
+        console.log('load more');
         this.notifications = [...this.notifications, ...notifications];
       } else {
-        console.log('this is init');
-        this.notifications = [
-          {
-            title: 'title 1',
-            message: 'message 1 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 2',
-            message: 'message 2 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 3',
-            message: 'message 3',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 4',
-            message: 'message 1 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 5',
-            message: 'message 2 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 6',
-            message: 'message 3',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 7',
-            message: 'message 1 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 8',
-            message: 'message 2 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 9',
-            message: 'message 3',
-            sentTime: '2022-07-06',
-          },
-          {
-            title: 'title 10',
-            message: 'message 1 a long message a long message a long message',
-            sentTime: '2022-07-06',
-          },
-        ];
+        console.log('init');
+        this.notifications = notifications;
       }
     } catch (err) {
       console.error(err);
@@ -151,8 +73,7 @@ export class HistoriesPage implements OnInit {
     } finally {
       if (infiniteScroll) {
         infiniteScroll.complete();
-        if (this.notifications.length >= this.notificationTotal)
-        {
+        if (response.result.length === 0) {
           infiniteScroll.disabled = true;
           console.log('disabled');
         }
@@ -161,9 +82,19 @@ export class HistoriesPage implements OnInit {
   }
 
   loadMoreNotifications() {
-    console.log('load more');
-    this.notificationFilter.pagination.currentPage += 1;
+    console.log('loadMoreNotifications');
+    this.filter.currentPage += 1;
     this.loadNotifications(this.infiniteScroll);
+  }
+
+  async doRefresh(refresher: any = null) {
+    if (this.infiniteScroll) this.infiniteScroll.disabled = false;
+    if (refresher) refresher.target.complete();
+    if (this.isError) this.isError = null;
+
+    this.notifications = null;
+    this.filter.currentPage = 1;
+    this.loadNotifications();
   }
 
   // async onNotification(notification: Notification) {
@@ -314,16 +245,6 @@ export class HistoriesPage implements OnInit {
 
   //   this.onSelectAllChange();
   // }
-
-  async doRefresh(refresher: any = null) {
-    if (this.infiniteScroll) this.infiniteScroll.disabled = false;
-    if (refresher) refresher.target.complete();
-    if (this.isError) this.isError = null;
-
-    this.notifications = null;
-    this.initFilter();
-    this.loadNotifications();
-  }
 
   // async onMore(itemSliding: IonItemSliding) {
   //   await itemSliding.open("end");

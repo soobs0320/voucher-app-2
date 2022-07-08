@@ -24,15 +24,21 @@ export class InterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    
-    return next.handle(req);
-    // return next.handle(req).pipe(
-    //   catchError((error: HttpErrorResponse) => {
-        
-    //     return throwError(error)
-    // })
-    // ,map(x=>{})
-    // )
+    return from(this.handle(req,next));
+  }
+
+  async handle(req: HttpRequest<any>, next: HttpHandler) {
+    const token = await this.storageService.get('token');
+    console.log('interceptor',req.url);
+    console.log('authtoken',token);
+    if (token) {
+      const tokenizedReq = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + token),
+      });
+      return next.handle(tokenizedReq).toPromise();
+    }
+
+    return next.handle(req).toPromise();
   }
 
   // async handle(req: HttpRequest<any>, next: HttpHandler) {

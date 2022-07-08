@@ -26,7 +26,11 @@ export class ContentPage implements OnInit {
 
   async loadData() {
     try {
-      this.content = { title: 'test title', content: '<p>there are some content...</p><img src="https://picsum.photos/300/300" /><p>there are some content...</p>' };
+      const response = await this.erpService.getList<Content>('content', {
+        code: 'help',
+        code_type: '=',
+      });
+      this.content = response.result[0];
     } catch (err) {
       console.error(err);
       this.isError = err;

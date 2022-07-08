@@ -63,16 +63,16 @@
             <!-- <ion-checkbox *ngIf="canSelect" slot="start" [(ngModel)]="notification.selected"
               (ngModelChange)="onSelectChange($event, notification)" class="mr-3"></ion-checkbox> -->
             <ion-avatar slot="start" class="avatar">
-                <img src='assets/image/avatar.png' alt="">
+                <img [src]="notification.icon" alt="" onerror="this.src='./assets/image/noimage.png'">
             </ion-avatar>
             <div class="ion-padding-vertical">
                 <h3 class="font-lg bold m-0">{{ notification.title }}</h3>
                 <p class="font-sm line-clamp my-1">{{ notification.message }}</p>
-                <p class="font-xs">{{ notification.sentTime | titlecase }}</p>
+                <p class="font-xs">{{ notification.sentTime | date:'yyyy-MM-dd HH:mm:ss' }}</p>
             </div>
-            <ion-button slot="end" fill="clear" color="dark" (click)="onMore(itemSliding)">
+            <!-- <ion-button slot="end" fill="clear" color="dark" (click)="onMore(itemSliding)">
                 <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
-            </ion-button>
+            </ion-button> -->
         </ion-item>
         <ion-item-options side="end">
             <ion-item-option (click)="onDelete(notification.doc_id)" color="danger">

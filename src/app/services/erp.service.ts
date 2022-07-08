@@ -17,12 +17,17 @@ export class ErpService {
 
   getList<T>(documentType: string, filter?) {
     const url = `${environment.apiUrl}/${environment.companyCode}/docs/${documentType}`;
-    return this.http.get<Pageable<T>>(url, { params:filter }).toPromise();
+    return this.http.get<Pageable<T>>(url, { params: filter }).toPromise();
   }
 
   getOne<T>(documentType: string, id: number) {
     const url = `${environment.apiUrl}/${environment.companyCode}/module/${documentType}/${id}`;
     return this.http.get<T>(url).toPromise();
+  }
+
+  update(documentType: string, id: number, payload: { [key: string]: any }) {
+    const url = `${environment.apiUrl}/${environment.companyCode}/docs/${documentType}/${id}`;
+    return this.http.post<any>(url, payload).toPromise();
   }
 
   login(payload: { [key: string]: any }) {

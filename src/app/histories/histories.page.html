@@ -58,8 +58,7 @@
 
 <ng-template #notificationCard let-notification="notification">
     <ion-item-sliding #itemSliding>
-        <ion-item lines="none" [ngClass]="notification.status == 'UNREAD' ? 'unread' : 'read'"
-            (click)="onNotification(notification)">
+        <ion-item lines="none" [ngClass]="notification.status == 'UNREAD' ? 'unread' : 'read'">
             <!-- <ion-checkbox *ngIf="canSelect" slot="start" [(ngModel)]="notification.selected"
               (ngModelChange)="onSelectChange($event, notification)" class="mr-3"></ion-checkbox> -->
             <ion-avatar slot="start" class="avatar">

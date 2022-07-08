@@ -21,7 +21,8 @@ export interface Content extends DefaultProperties {
 }
 
 export interface Notification extends DefaultProperties {
-  title: string,
-  message: string,
-  sentTime: Date | string,
+  icon: string;
+  title: string;
+  message: string;
+  sentTime: Date | string;
 }

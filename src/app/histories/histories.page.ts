@@ -42,7 +42,7 @@ export class HistoriesPage implements OnInit {
       lang: 'en',
       currentPage: 1,
       itemsPerPage: 10,
-      fromVoucherMerchant: true
+      fromVoucherMerchant: true,
     };
     this.loadNotifications();
   }
@@ -51,13 +51,14 @@ export class HistoriesPage implements OnInit {
     let response: Pageable<any>;
     try {
       response = await this.erpService.getList<any>('voucher', this.filter);
-      const notifications:Notification[] = response.result.map((voucher) => {
-        return <Notification>{
+      const notifications: Notification[] = response.result.map((voucher) => {
+        const notification: Notification = {
           icon: voucher.campaign.thumbnail,
           title: voucher.campaign.name,
           message: voucher.label,
           sentTime: voucher.doc_lastModifiedDate,
         };
+        return notification;
       });
 
       if (infiniteScroll) {

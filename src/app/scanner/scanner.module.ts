@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ScannerPage } from './scanner.page';
 
 import { ScannerPageRoutingModule } from './scanner-routing.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { ScannerPageRoutingModule } from './scanner-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    ScannerPageRoutingModule
+    ScannerPageRoutingModule,
+    TranslateModule
   ],
   declarations: [ScannerPage]
 })

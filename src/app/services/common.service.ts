@@ -46,7 +46,7 @@ export class CommonService {
   logout() {
     this.storageService.remove('token');
     this.storageService.remove('refreshToken');
-    this.storageService.remove('userId');
+    this.storageService.remove('user');
     this.router.navigate(['/login']);
   }
 }

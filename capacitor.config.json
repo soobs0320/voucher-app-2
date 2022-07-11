@@ -1,5 +1,5 @@
 {
-	"appId": "io.ionic.starter",
+	"appId": "my.com.giver.voucher.merchant",
 	"appName": "voucher-merchant",
 	"webDir": "www",
 	"bundledWebRuntime": false

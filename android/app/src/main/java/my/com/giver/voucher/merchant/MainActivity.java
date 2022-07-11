@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package my.com.giver.voucher.merchant;
 
 import com.getcapacitor.BridgeActivity;
 

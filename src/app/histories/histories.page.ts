@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { SwsEmptyConfig } from '../components/empty/empty.component';
 import { Notification, Pageable } from '../../interfaces/erp';
 import { ErpService } from '../services/erp.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-histories',
@@ -48,7 +49,7 @@ export class HistoriesPage implements OnInit {
       response = await this.erpService.getList<any>('voucher', this.filter);
       const notifications: Notification[] = response.result.map((voucher) => {
         const notification: Notification = {
-          icon: voucher.campaign.thumbnail,
+          icon: this.getImageUrl(voucher.campaign.thumbnail),
           title: voucher.customer[0].username,
           message: voucher.label,
           sentTime: voucher.activationHistory[0].doc_lastModifiedDate,
@@ -91,6 +92,14 @@ export class HistoriesPage implements OnInit {
     this.notifications = null;
     this.filter.currentPage = 1;
     this.loadNotifications();
+  }
+
+  private getImageUrl(url: string) {
+    if (!url) return null;
+
+    if (url.startsWith('http')) return url;
+
+    return environment.apiUrl + '/' + url;
   }
 
   // async onNotification(notification: Notification) {

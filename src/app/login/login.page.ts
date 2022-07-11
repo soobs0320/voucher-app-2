@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
     const refreshToken = response.headers.get('x-auth-refresh-token');
     await this.storageService.set('token', token);
     await this.storageService.set('refreshToken', refreshToken);
-    await this.storageService.set('userId', response.body.data.doc_id);
+    await this.storageService.set('user', response.body.data);
     this.router.navigate(['/home']);
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SwsEmptyConfig } from 'src/app/components/empty/empty.component';
 import { ErpService } from 'src/app/services/erp.service';
 import { Content } from 'src/interfaces/erp';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-content-page',
@@ -18,7 +19,10 @@ export class ContentPage implements OnInit {
     retryButtonText: '_TRY_AGAIN',
   };
 
-  constructor(private erpService: ErpService) {}
+  constructor(
+    private erpService: ErpService,
+    private storageService: StorageService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -26,9 +30,11 @@ export class ContentPage implements OnInit {
 
   async loadData() {
     try {
+      const language = await this.storageService.get('language');
       const response = await this.erpService.getList<Content>('content', {
         code: 'help',
         code_type: '=',
+        lang: language || 'en',
       });
       this.content = response.result[0];
     } catch (err) {

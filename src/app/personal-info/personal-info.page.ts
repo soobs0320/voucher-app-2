@@ -13,6 +13,7 @@ import { StorageService } from '../services/storage.service';
 export class PersonalInfoPage implements OnInit {
   languages: Language[];
   selectedLanguage;
+  name;
 
   constructor(
     private erpService: ErpService,
@@ -25,8 +26,13 @@ export class PersonalInfoPage implements OnInit {
   }
 
   async initialize() {
+    const userId = await this.storageService.get('userId');
+    const user = await this.erpService.getOne('doc user', userId);
+    this.name = user.first_name + ' ' + user.last_name;
+
     const response = await this.erpService.getList<Language>('language');
     this.languages = response.result;
+
     const language = await this.storageService.get('language');
     this.selectedLanguage = language || 'en';
   }

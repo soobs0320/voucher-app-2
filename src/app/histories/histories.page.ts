@@ -49,9 +49,9 @@ export class HistoriesPage implements OnInit {
       const notifications: Notification[] = response.result.map((voucher) => {
         const notification: Notification = {
           icon: voucher.campaign.thumbnail,
-          title: voucher.campaign.name,
+          title: voucher.customer[0].username,
           message: voucher.label,
-          sentTime: voucher.doc_lastModifiedDate,
+          sentTime: voucher.activationHistory[0].doc_lastModifiedDate,
         };
         return notification;
       });

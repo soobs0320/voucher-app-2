@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Pageable } from 'src/interfaces/erp';
 import { StorageService } from './storage.service';
@@ -13,19 +14,37 @@ export class ErpService {
     private storageService: StorageService
   ) {}
 
-  getList<T>(documentType: string, filter?) {
+  async getList<T>(documentType: string, filter?) {
+    const token = await this.storageService.get('token');
+    const headers = { Authorization: 'Bearer ' + token };
+
     const url = `${environment.apiUrl}/${environment.companyCode}/docs/${documentType}`;
-    return this.http.get<Pageable<T>>(url, { params: filter }).toPromise();
+    return this.http
+      .get<Pageable<T>>(url, { params: filter, headers })
+      .toPromise();
   }
 
-  getOne<T>(documentType: string, id: number) {
+  async getOne<T>(documentType: string, id: number) {
+    const token = await this.storageService.get('token');
+    const headers = { Authorization: 'Bearer ' + token };
+
     const url = `${environment.apiUrl}/${environment.companyCode}/module/${documentType}/${id}`;
-    return this.http.get<T>(url).toPromise();
+    return this.http
+      .get<T>(url, { headers })
+      .pipe(map((res) => res[0]))
+      .toPromise();
   }
 
-  update(documentType: string, id: number, payload: { [key: string]: any }) {
+  async update(
+    documentType: string,
+    id: number,
+    payload: { [key: string]: any }
+  ) {
+    const token = await this.storageService.get('token');
+    const headers = { Authorization: 'Bearer ' + token };
+
     const url = `${environment.apiUrl}/${environment.companyCode}/docs/${documentType}/${id}`;
-    return this.http.post<any>(url, payload).toPromise();
+    return this.http.post<any>(url, payload, { headers }).toPromise();
   }
 
   login(payload: { [key: string]: any }) {
@@ -35,14 +54,20 @@ export class ErpService {
       .toPromise();
   }
 
-  public async getRefreshToken() {
-    const refreshToken = await this.storageService.get('refreshToken');
+  public async getRefreshToken(refreshToken) {
     let headers = { headers: { Authorization: 'Bearer ' + refreshToken } };
     let requestURL =
       environment.apiUrl +
       '/' +
       environment.companyCode +
       '/refresh_refresh_token';
+    return this.http.get<any>(requestURL, headers).pipe().toPromise();
+  }
+
+  public async getAccessToken(refreshToken) {
+    let headers = { headers: { Authorization: 'Bearer ' + refreshToken } };
+    let requestURL =
+      environment.apiUrl + '/' + environment.companyCode + '/refresh_token';
     return this.http.get<any>(requestURL, headers).pipe().toPromise();
   }
 }

@@ -16,7 +16,7 @@ import { CommonService } from '../services/common.service';
 export class ScannerPage implements OnInit {
   isScanning: boolean = false;
   isLoading: boolean = false;
-  pattern = /\/activation-history\/(\d+)/;
+  pattern = /\/activation-history\/(\d+)\/campaign\/(\d+)/;
 
   constructor(
     private commonService: CommonService,
@@ -55,12 +55,14 @@ export class ScannerPage implements OnInit {
         return;
       }
 
-      const [_, voucherActivationId] = this.pattern.exec(result.content);
+      const [_, voucherActivationId, campaignId] = this.pattern.exec(
+        result.content
+      );
 
       await this.erpService.update(
         'voucher activation history',
         +voucherActivationId,
-        null
+        { campaignId }
       );
       this.commonService.presentAlert(
         'Success',

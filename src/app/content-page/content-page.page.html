@@ -8,10 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="content; else loading" class="section">
-    <div class="html-content">
+  <div *ngIf="content; else loading" class="section ion-padding">
       <dynamic-html [content]="content.content"></dynamic-html>
-    </div>
   </div>
 </ion-content>
 
